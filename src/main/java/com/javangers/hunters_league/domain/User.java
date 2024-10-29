@@ -3,6 +3,7 @@ package com.javangers.hunters_league.domain;
 import com.javangers.hunters_league.domain.enumeration.Role;
 import jakarta.persistence.*;
 import lombok.*;
+import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -15,6 +16,7 @@ import java.util.UUID;
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString
+@Component
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
