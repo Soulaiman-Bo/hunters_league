@@ -22,6 +22,4 @@ public interface LoginMapper {
     @Mapping(source = "email", target = "email")
     @Mapping(source = "role", target = "role")
     UserResponseVM toResponseVM(User user);
-
-    List<UserResponseVM> toResponseVMList(List<User> users);
 }
