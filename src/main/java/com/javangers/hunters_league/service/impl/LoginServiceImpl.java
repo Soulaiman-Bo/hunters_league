@@ -1,29 +1,65 @@
 package com.javangers.hunters_league.service.impl;
 
 import com.javangers.hunters_league.domain.User;
+import com.javangers.hunters_league.domain.enumeration.Role;
 import com.javangers.hunters_league.repository.UserRepository;
 import com.javangers.hunters_league.service.LoginService;
-import com.javangers.hunters_league.service.dto.LoginRequestDTO;
-import com.javangers.hunters_league.service.dto.LoginResponseDTO;
+import com.javangers.hunters_league.web.errors.InvalidLicenseException;
+import com.javangers.hunters_league.web.errors.UserAlreadyExistsException;
+import com.javangers.hunters_league.web.vm.LoginRequestVM;
+import com.javangers.hunters_league.web.vm.LoginResponseVM;
 import com.javangers.hunters_league.web.errors.UserNotFoundException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import java.time.LocalDateTime;
+
 
 @Service
 @RequiredArgsConstructor
 public class LoginServiceImpl implements LoginService {
 
     private final UserRepository userRepository;
+    private final PasswordEncoder passwordEncoder;
 
-    public LoginResponseDTO login(LoginRequestDTO loginRequest) {
-        User user = userRepository.findByEmail(loginRequest.getEmail())
-                .orElseThrow(() -> new UserNotFoundException("User not found with email: " + loginRequest.getEmail()));
 
-        return new LoginResponseDTO(
-                user.getUsername(),
-                user.getFirstName(),
-                user.getLastName(),
-                user.getEmail(),
-                user.getRole());
+    @Override
+    public User login(User logingUser) {
+        return userRepository.findByEmail(logingUser.getEmail())
+                .orElseThrow(() -> new UserNotFoundException("User not found with email: " + logingUser.getEmail()));
     }
+
+    @Override
+    public User register(User newUser) {
+        if (userRepository.existsByUsername(newUser.getUsername())) {
+            throw new UserAlreadyExistsException("Username already exists");
+        }
+
+        if (userRepository.existsByEmail(newUser.getEmail())) {
+            throw new UserAlreadyExistsException("Email already exists");
+        }
+
+        if (newUser.getLicenseExpirationDate() != null &&
+            newUser.getLicenseExpirationDate().isBefore(LocalDateTime.now())) {
+            throw new InvalidLicenseException("License expiration date must be in the future");
+        }
+
+        User user = User.builder()
+                .username(newUser.getUsername())
+                .password(passwordEncoder.encode(newUser.getPassword()))
+                .firstName(newUser.getFirstName())
+                .lastName(newUser.getLastName())
+                .cin(newUser.getCin())
+                .email(newUser.getEmail())
+                .nationality(newUser.getNationality())
+                .joinDate(LocalDateTime.now())
+                .licenseExpirationDate(newUser.getLicenseExpirationDate())
+                .role(Role.MEMBER)
+                .build();
+
+        return userRepository.save(user);
+    }
+
+
 }

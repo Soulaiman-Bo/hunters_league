@@ -1,8 +1,10 @@
 package com.javangers.hunters_league.service;
 
-import com.javangers.hunters_league.service.dto.LoginRequestDTO;
-import com.javangers.hunters_league.service.dto.LoginResponseDTO;
+import com.javangers.hunters_league.domain.User;
+import com.javangers.hunters_league.web.vm.LoginRequestVM;
+import com.javangers.hunters_league.web.vm.LoginResponseVM;
 
 public interface LoginService {
-    public LoginResponseDTO login(LoginRequestDTO loginRequest);
+    public User login(User user);
+    public User register(User user);
 }
