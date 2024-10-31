@@ -3,12 +3,10 @@ package com.javangers.hunters_league.service.impl;
 import com.javangers.hunters_league.domain.User;
 import com.javangers.hunters_league.domain.enumeration.Role;
 import com.javangers.hunters_league.repository.UserRepository;
-import com.javangers.hunters_league.service.LoginService;
+import com.javangers.hunters_league.service.UserService;
 import com.javangers.hunters_league.web.errors.AuthenticationException;
 import com.javangers.hunters_league.web.errors.InvalidLicenseException;
 import com.javangers.hunters_league.web.errors.UserAlreadyExistsException;
-import com.javangers.hunters_league.web.vm.LoginRequestVM;
-import com.javangers.hunters_league.web.vm.LoginResponseVM;
 import com.javangers.hunters_league.web.errors.UserNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -19,22 +17,25 @@ import java.time.LocalDateTime;
 
 @Service
 @RequiredArgsConstructor
-public class LoginServiceImpl implements LoginService {
+public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
 
+    public User findUserByEmail(String email) {
+        return userRepository.findByEmail(email)
+                .orElseThrow(() -> new UserNotFoundException("User not found with email: " + email));
+    }
 
     @Override
     public User login(User logingUser) {
-        User user = userRepository.findByEmail(logingUser.getEmail())
-                .orElseThrow(() -> new UserNotFoundException("User not found with email: " + logingUser.getEmail()));
-
+        User user = findUserByEmail(logingUser.getEmail());
         if (!passwordEncoder.matches(logingUser.getPassword(), user.getPassword())) {
             throw new AuthenticationException("Invalid username or password");
         }
 
         return User.builder()
+                .id(user.getId())
                 .username(user.getUsername())
                 .firstName(user.getFirstName())
                 .lastName(user.getLastName())
@@ -76,6 +77,5 @@ public class LoginServiceImpl implements LoginService {
 
         return userRepository.save(user);
     }
-
 
 }

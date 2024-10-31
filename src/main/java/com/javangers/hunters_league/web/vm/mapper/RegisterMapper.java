@@ -2,7 +2,7 @@ package com.javangers.hunters_league.web.vm.mapper;
 
 import com.javangers.hunters_league.domain.User;
 import com.javangers.hunters_league.web.vm.RegisterRequestVM;
-import com.javangers.hunters_league.web.vm.RegisterResponseVM;
+import com.javangers.hunters_league.web.vm.UserResponseVM;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
@@ -23,8 +23,7 @@ public interface RegisterMapper {
     @Mapping(source = "lastName", target = "lastName")
     @Mapping(source = "email", target = "email")
     @Mapping(source = "role", target = "role")
-    RegisterResponseVM toResponseVM(User user);
-
+    UserResponseVM toResponseVM(User user);
 
 
 }

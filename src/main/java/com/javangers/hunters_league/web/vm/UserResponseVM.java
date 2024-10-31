@@ -1,9 +1,14 @@
 package com.javangers.hunters_league.web.vm;
 
+import com.javangers.hunters_league.domain.enumeration.Role;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
+
+import java.util.UUID;
 
 @Data
-public class RegisterResponseVM {
+public class UserResponseVM {
     private String id;
     private String email;
     private String username;
