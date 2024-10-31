@@ -13,6 +13,7 @@ import java.util.List;
 public interface LoginMapper {
 
     @Mapping(source = "email", target = "email")
+    @Mapping(source = "password", target = "password")
     User toEntity(LoginRequestVM loginRequestVM);
 
     @Mapping(source = "username", target = "username")

@@ -23,7 +23,6 @@ import java.util.Map;
 public class AuthController {
 
     private final LoginService loginService;
-    private final User user;
     private final LoginMapper loginMapper;
     private final RegisterMapper registerMapper;
 
@@ -37,19 +36,9 @@ public class AuthController {
 
     @PostMapping("/register")
     public ResponseEntity<Object> register(@Valid @RequestBody RegisterRequestVM registerRequest, BindingResult bindingResult) {
-
-        if (bindingResult.hasErrors()) {
-            Map<String, String> errors = new HashMap<>();
-            bindingResult.getFieldErrors().forEach(error -> {
-                errors.put(error.getField(), error.getDefaultMessage());
-            });
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errors);
-        }
-
             User user = registerMapper.toEntity(registerRequest);
             User createdUser = loginService.register(user);
             RegisterResponseVM response = registerMapper.toResponseVM(createdUser);
-            return ResponseEntity.ok(response);
-
+        return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 }

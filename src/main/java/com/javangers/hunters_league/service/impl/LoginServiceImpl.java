@@ -4,6 +4,7 @@ import com.javangers.hunters_league.domain.User;
 import com.javangers.hunters_league.domain.enumeration.Role;
 import com.javangers.hunters_league.repository.UserRepository;
 import com.javangers.hunters_league.service.LoginService;
+import com.javangers.hunters_league.web.errors.AuthenticationException;
 import com.javangers.hunters_league.web.errors.InvalidLicenseException;
 import com.javangers.hunters_league.web.errors.UserAlreadyExistsException;
 import com.javangers.hunters_league.web.vm.LoginRequestVM;
@@ -26,8 +27,23 @@ public class LoginServiceImpl implements LoginService {
 
     @Override
     public User login(User logingUser) {
-        return userRepository.findByEmail(logingUser.getEmail())
+        User user = userRepository.findByEmail(logingUser.getEmail())
                 .orElseThrow(() -> new UserNotFoundException("User not found with email: " + logingUser.getEmail()));
+
+        if (!passwordEncoder.matches(logingUser.getPassword(), user.getPassword())) {
+            throw new AuthenticationException("Invalid username or password");
+        }
+
+        return User.builder()
+                .username(user.getUsername())
+                .firstName(user.getFirstName())
+                .lastName(user.getLastName())
+                .cin(user.getCin())
+                .email(user.getEmail())
+                .nationality(user.getNationality())
+                .licenseExpirationDate(user.getLicenseExpirationDate())
+                .role(user.getRole())
+                .build();
     }
 
     @Override
