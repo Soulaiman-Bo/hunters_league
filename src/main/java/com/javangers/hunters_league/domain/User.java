@@ -1,5 +1,6 @@
 package com.javangers.hunters_league.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.javangers.hunters_league.domain.enumeration.Role;
 import jakarta.persistence.*;
 import lombok.*;
@@ -44,6 +45,7 @@ public class User {
     private LocalDateTime licenseExpirationDate;
 
     @OneToMany(mappedBy = "user")
+    @JsonIgnore
     private List<Participation> participations;
 
 }

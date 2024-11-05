@@ -1,5 +1,6 @@
 package com.javangers.hunters_league.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.javangers.hunters_league.domain.enumeration.SpeciesType;
 import jakarta.persistence.*;
 import lombok.*;
@@ -35,6 +36,7 @@ public class Competition {
     private Boolean openRegistration;
 
     @OneToMany(mappedBy = "competition")
+    @JsonIgnore
     private List<Participation> participations;
 
 }
