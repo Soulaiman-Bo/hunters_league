@@ -10,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/api/competitions")
@@ -26,6 +27,13 @@ public class CompetitionController {
         return ResponseEntity.created(URI.create("/api/competitions/" + created.getId()))
                 .body(created);
 
+    }
+
+    @GetMapping("/{competitionId}")
+    public ResponseEntity<Competition> getCompetition(
+            @PathVariable UUID competitionId) {
+        Competition competition = competitionService.getCompetition(competitionId);
+        return ResponseEntity.ok(competition);
     }
 
 }
