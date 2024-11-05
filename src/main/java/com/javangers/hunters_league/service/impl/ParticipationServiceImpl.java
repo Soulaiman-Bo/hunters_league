@@ -10,6 +10,7 @@ import com.javangers.hunters_league.service.ParticipationService;
 import com.javangers.hunters_league.web.errors.BusinessValidationException;
 import com.javangers.hunters_league.web.errors.UserNotFoundException;
 import jakarta.persistence.EntityNotFoundException;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -27,6 +28,7 @@ public class ParticipationServiceImpl implements ParticipationService {
     private final UserRepository userRepository;
 
     @Override
+    @Transactional
     public Participation registerForCompetition(UUID competitionId, UUID userId) {
         Competition competition = competitionRepository.findById(competitionId)
                 .orElseThrow(() -> new EntityNotFoundException("Competition not found"));
