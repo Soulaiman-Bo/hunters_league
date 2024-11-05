@@ -15,6 +15,7 @@ public interface RegisterMapper {
     @Mapping(source = "email", target = "email")
     @Mapping(source = "nationality", target = "nationality")
     @Mapping(source = "password", target = "password")
+    @Mapping(source = "licenseExpirationDate", target = "licenseExpirationDate")
     User toEntity(RegisterRequestVM registerRequestVM);
 
     @Mapping(source = "id", target = "id")
@@ -22,6 +23,7 @@ public interface RegisterMapper {
     @Mapping(source = "firstName", target = "firstName")
     @Mapping(source = "lastName", target = "lastName")
     @Mapping(source = "email", target = "email")
+    @Mapping(source = "licenseExpirationDate", target = "licenseExpirationDate")
     @Mapping(source = "role", target = "role")
     UserResponseVM toResponseVM(User user);
 

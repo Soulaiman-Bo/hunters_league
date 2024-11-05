@@ -1,10 +1,9 @@
 package com.javangers.hunters_league.web.vm;
 
-import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Pattern;
-import jakarta.validation.constraints.Size;
+import jakarta.validation.constraints.*;
 import lombok.Data;
+
+import java.time.LocalDateTime;
 
 @Data
 public class RegisterRequestVM {
@@ -38,4 +37,8 @@ public class RegisterRequestVM {
     @NotBlank(message = "Nationality is required")
     @Size(min = 2, max = 20, message = "Nationality must be between 2 and 50 characters")
     private String nationality;
+
+    @NotNull(message = "license Expiration Date is required")
+    @Future(message = "license Expiration Date must be in the future")
+    LocalDateTime licenseExpirationDate;
 }
