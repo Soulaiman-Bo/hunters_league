@@ -4,6 +4,7 @@ import com.javangers.hunters_league.domain.Competition;
 import com.javangers.hunters_league.domain.Participation;
 import com.javangers.hunters_league.service.CompetitionService;
 import com.javangers.hunters_league.service.ParticipationService;
+import com.javangers.hunters_league.service.dto.ParticipationDTO;
 import com.javangers.hunters_league.web.vm.CompetitionRequestVM;
 import com.javangers.hunters_league.web.vm.ParticipationRequestVM;
 import com.javangers.hunters_league.web.vm.mapper.CompetitionMapper;
@@ -42,11 +43,11 @@ public class CompetitionController {
     }
 
     @PostMapping("/{competitionId}/register")
-    public ResponseEntity<Participation> registerForCompetition(
+    public ResponseEntity<ParticipationDTO> registerForCompetition(
             @PathVariable UUID competitionId,
             @Valid @RequestBody ParticipationRequestVM request) {
 
-        Participation participation = participationService.registerForCompetition(
+        ParticipationDTO participation = participationService.registerForCompetition(
                 competitionId,
                 request.getUserId()
         );

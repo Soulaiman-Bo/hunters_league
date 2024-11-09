@@ -1,10 +1,9 @@
 package com.javangers.hunters_league.service;
 
-import com.javangers.hunters_league.domain.Competition;
-import com.javangers.hunters_league.domain.Participation;
+import com.javangers.hunters_league.service.dto.ParticipationDTO;
 
 import java.util.UUID;
 
 public interface ParticipationService {
-    Participation registerForCompetition(UUID competitionId, UUID userId);
+    ParticipationDTO registerForCompetition(UUID competitionId, UUID userId);
 }

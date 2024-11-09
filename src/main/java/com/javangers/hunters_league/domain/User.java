@@ -45,8 +45,6 @@ public class User {
     private LocalDateTime licenseExpirationDate;
 
     @OneToMany(mappedBy = "user")
-    @JsonIgnore
     private List<Participation> participations;
-
 }
 

@@ -6,7 +6,9 @@ import com.javangers.hunters_league.domain.User;
 import com.javangers.hunters_league.repository.CompetitionRepository;
 import com.javangers.hunters_league.repository.ParticipationRepository;
 import com.javangers.hunters_league.repository.UserRepository;
+import com.javangers.hunters_league.service.dto.ParticipationDTO;
 import com.javangers.hunters_league.service.ParticipationService;
+import com.javangers.hunters_league.service.dto.mapper.ParticipationMapper;
 import com.javangers.hunters_league.web.errors.BusinessValidationException;
 import com.javangers.hunters_league.web.errors.UserNotFoundException;
 import jakarta.persistence.EntityNotFoundException;
@@ -29,7 +31,7 @@ public class ParticipationServiceImpl implements ParticipationService {
 
     @Override
     @Transactional
-    public Participation registerForCompetition(UUID competitionId, UUID userId) {
+    public ParticipationDTO registerForCompetition(UUID competitionId, UUID userId) {
         Competition competition = competitionRepository.findById(competitionId)
                 .orElseThrow(() -> new EntityNotFoundException("Competition not found"));
 
@@ -45,7 +47,9 @@ public class ParticipationServiceImpl implements ParticipationService {
                 .hunts(new ArrayList<>())
                 .build();
 
-        return participationRepository.save(participation);
+        Participation savedParticipation = participationRepository.save(participation);
+
+        return ParticipationMapper.toDTO(savedParticipation);
     }
 
 

@@ -47,6 +47,13 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.CONFLICT).body(error);
     }
 
+    @ExceptionHandler(BusinessValidationException.class)
+    public ResponseEntity<Map<String, String>> handleUserAlreadyExistsException(BusinessValidationException ex) {
+        Map<String, String> error = new HashMap<>();
+        error.put("message", ex.getMessage());
+        return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).body(error);
+    }
+
     @ExceptionHandler(InvalidLicenseException.class)
     public ResponseEntity<Map<String, String>> handleInvalidLicense(InvalidLicenseException ex) {
         return ResponseEntity.badRequest().body(Map.of("error", ex.getMessage()));

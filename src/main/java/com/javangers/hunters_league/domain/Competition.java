@@ -36,7 +36,6 @@ public class Competition {
     private Boolean openRegistration;
 
     @OneToMany(mappedBy = "competition")
-    @JsonIgnore
     private List<Participation> participations;
 
 }
