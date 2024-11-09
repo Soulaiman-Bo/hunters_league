@@ -6,7 +6,6 @@ import com.javangers.hunters_league.web.vm.UserResponseVM;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
-import java.util.List;
 
 @Mapper(componentModel = "spring")
 public interface LoginMapper {
