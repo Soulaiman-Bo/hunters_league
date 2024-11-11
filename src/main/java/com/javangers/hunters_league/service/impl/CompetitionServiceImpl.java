@@ -3,15 +3,20 @@ package com.javangers.hunters_league.service.impl;
 import com.javangers.hunters_league.domain.Competition;
 import com.javangers.hunters_league.repository.CompetitionRepository;
 import com.javangers.hunters_league.service.CompetitionService;
+import com.javangers.hunters_league.service.dto.LeaderboardPositionDTO;
+import com.javangers.hunters_league.service.dto.LeaderboardProjectionInterface;
 import com.javangers.hunters_league.web.errors.BusinessValidationException;
 import jakarta.persistence.EntityNotFoundException;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.time.DayOfWeek;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
+import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 
 @Service
@@ -54,4 +59,24 @@ public class CompetitionServiceImpl implements CompetitionService {
             throw new BusinessValidationException("Only one competition per week is allowed");
         }
     }
+
+    @Override
+    @Transactional
+    public List<LeaderboardPositionDTO> getCompetitionLeaderboard(UUID competitionId) {
+        List<LeaderboardProjectionInterface> leaderboard = competitionRepository.findTop3ByCompetitionIdNative(competitionId);
+
+        if (leaderboard.isEmpty()) {
+            throw new BusinessValidationException("No participants found in this competition");
+        }
+
+        return leaderboard.stream()
+                .map(projection -> LeaderboardPositionDTO.builder()
+                        .userFullName(projection.getUsername())
+                        .score(projection.getScore())
+                        .rank(leaderboard.indexOf(projection) + 1)
+                        .competitionCode(projection.getCompetitionCode())
+                        .build())
+                .collect(Collectors.toList());
+    }
+
 }
