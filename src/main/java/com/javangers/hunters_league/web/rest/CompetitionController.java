@@ -4,6 +4,7 @@ import com.javangers.hunters_league.domain.Competition;
 import com.javangers.hunters_league.domain.Participation;
 import com.javangers.hunters_league.service.CompetitionService;
 import com.javangers.hunters_league.service.ParticipationService;
+import com.javangers.hunters_league.service.dto.LeaderboardPositionDTO;
 import com.javangers.hunters_league.service.dto.ParticipationDTO;
 import com.javangers.hunters_league.web.vm.CompetitionRequestVM;
 import com.javangers.hunters_league.web.vm.ParticipationRequestVM;
@@ -14,6 +15,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
+import java.util.List;
 import java.util.UUID;
 
 @RestController
@@ -53,6 +55,13 @@ public class CompetitionController {
         );
 
         return ResponseEntity.ok(participation);
+    }
+
+    @GetMapping("/{competitionId}/leaderboard")
+    public ResponseEntity<List<LeaderboardPositionDTO>> getCompetitionLeaderboard(
+            @PathVariable UUID competitionId) {
+        List<LeaderboardPositionDTO> leaderboard = competitionService.getCompetitionLeaderboard(competitionId);
+        return ResponseEntity.ok(leaderboard);
     }
 
 }
