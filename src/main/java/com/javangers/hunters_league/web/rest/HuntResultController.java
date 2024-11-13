@@ -3,6 +3,7 @@ package com.javangers.hunters_league.web.rest;
 
 import com.javangers.hunters_league.domain.Competition;
 import com.javangers.hunters_league.domain.Hunt;
+import com.javangers.hunters_league.repository.dto.UserCompetitionRankingDTO;
 import com.javangers.hunters_league.service.HuntService;
 import com.javangers.hunters_league.service.MemberResultsService;
 import com.javangers.hunters_league.service.dto.MemberResultDTO;
@@ -48,4 +49,14 @@ public class HuntResultController {
         Page<MemberResultDTO> results = memberResultsService.getMemberResults(userId, filterDTO);
         return ResponseEntity.ok(PageResponse.of(results));
     }
+
+    @GetMapping("/member/{userId}/rank")
+    public ResponseEntity<PageResponse<UserCompetitionRankingDTO>> getMemberRankResults(
+            @PathVariable UUID userId,
+            @Valid MemberResultsFilterDTO filterDTO) {
+
+        Page<UserCompetitionRankingDTO> results = memberResultsService.getMemberRankResults(userId, filterDTO);
+        return ResponseEntity.ok(PageResponse.of(results));
+    }
+
 }

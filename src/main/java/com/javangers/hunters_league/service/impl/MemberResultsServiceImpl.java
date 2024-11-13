@@ -3,6 +3,7 @@ package com.javangers.hunters_league.service.impl;
 
 import com.javangers.hunters_league.repository.MemberResultsRepository;
 import com.javangers.hunters_league.repository.UserRepository;
+import com.javangers.hunters_league.repository.dto.UserCompetitionRankingDTO;
 import com.javangers.hunters_league.service.MemberResultsService;
 import com.javangers.hunters_league.service.dto.MemberResultDTO;
 import com.javangers.hunters_league.web.errors.BusinessValidationException;
@@ -52,15 +53,27 @@ public class MemberResultsServiceImpl implements MemberResultsService {
         );
     }
 
-    private void validateUser(UUID userId) {
-        if (!userRepository.existsById(userId)) {
-            throw new UserNotFoundException("User not found with ID: " + userId);
-        }
-    }
+
 
     private void validateDateRange(LocalDateTime startDate, LocalDateTime endDate) {
         if (startDate != null && endDate != null && startDate.isAfter(endDate)) {
             throw new BusinessValidationException("Start date must be before end date");
         }
     }
+
+    public Page<UserCompetitionRankingDTO> getMemberRankResults(UUID userId, MemberResultsFilterDTO filterDTO) {
+        validateUser(userId);
+
+        return memberResultsRepository.findMemberRankResults(
+                userId,
+                PageRequest.of(filterDTO.getPage(), filterDTO.getSize())
+        );
+    }
+
+    private void validateUser(UUID userId) {
+        if (!userRepository.existsById(userId)) {
+            throw new UserNotFoundException("User not found with ID: " + userId);
+        }
+    }
+
 }

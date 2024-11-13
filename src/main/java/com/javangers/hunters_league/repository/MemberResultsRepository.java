@@ -1,6 +1,7 @@
 package com.javangers.hunters_league.repository;
 
 import com.javangers.hunters_league.domain.Participation;
+import com.javangers.hunters_league.repository.dto.UserCompetitionRankingDTO;
 import com.javangers.hunters_league.service.dto.MemberResultDTO;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -10,6 +11,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.UUID;
 
 @Repository
@@ -45,4 +47,8 @@ public interface MemberResultsRepository extends JpaRepository<Participation, UU
             @Param("startDate") LocalDateTime startDate,
             @Param("endDate") LocalDateTime endDate,
             Pageable pageable);
+
+    @Query(value = "SELECT * FROM get_user_competition_rankings(:userId)", nativeQuery = true)
+    Page<UserCompetitionRankingDTO> findMemberRankResults(@Param("userId") UUID userId, Pageable pageable);
+
 }
