@@ -45,14 +45,13 @@ class HuntServiceImplTest {
     private HuntServiceImpl huntService;
 
     private Participation participation;
-    private Competition competition;
     private Species species;
     private Hunt hunt;
 
     @BeforeEach
     void setUp() {
         // Create a mock competition
-        competition = new Competition();
+        Competition competition = new Competition();
         competition.setId(UUID.randomUUID());
 
         // Create a mock participation
@@ -82,7 +81,7 @@ class HuntServiceImplTest {
     }
 
     @Test
-    void submitCompetitionResult_Successful() {
+    void submitCompetitionResultSuccessful() {
         // Arrange
         when(participationRepository.findById(participation.getId()))
                 .thenReturn(Optional.of(participation));
@@ -105,7 +104,7 @@ class HuntServiceImplTest {
     }
 
     @Test
-    void submitCompetitionResult_ParticipantNotFound() {
+    void submitCompetitionResultParticipantNotFound() {
         // Arrange
         when(participationRepository.findById(participation.getId()))
                 .thenReturn(Optional.empty());
@@ -119,7 +118,7 @@ class HuntServiceImplTest {
     }
 
     @Test
-    void submitCompetitionResult_CompetitionMismatch() {
+    void submitCompetitionResultCompetitionMismatch() {
         // Arrange
         Participation wrongParticipation = new Participation();
         Competition wrongCompetition = new Competition();
@@ -140,7 +139,7 @@ class HuntServiceImplTest {
     }
 
     @Test
-    void submitCompetitionResult_SpeciesNotFound() {
+    void submitCompetitionResultSpeciesNotFound() {
         // Arrange
         when(participationRepository.findById(participation.getId()))
                 .thenReturn(Optional.of(participation));
@@ -156,7 +155,7 @@ class HuntServiceImplTest {
     }
 
     @Test
-    void submitCompetitionResult_WeightTooLow() {
+    void submitCompetitionResultWeightTooLow() {
         // Arrange
         hunt.setWeight(4.0); // Below minimum weight
 

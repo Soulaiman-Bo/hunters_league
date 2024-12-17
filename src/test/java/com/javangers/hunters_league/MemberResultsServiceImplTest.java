@@ -49,7 +49,7 @@ class MemberResultsServiceImplTest {
     }
 
     @Test
-    void getMemberResults_UserExists_NoDateFilter() {
+    void getMemberResultsUserExistsNoDateFilter() {
         // Arrange
         when(userRepository.existsById(userId)).thenReturn(true);
 
@@ -76,7 +76,7 @@ class MemberResultsServiceImplTest {
     }
 
     @Test
-    void getMemberResults_WithDateFilter() {
+    void getMemberResultsWithDateFilter() {
         // Arrange
         LocalDate startDate = LocalDate.now().minusDays(30);
         LocalDate endDate = LocalDate.now();
@@ -109,7 +109,7 @@ class MemberResultsServiceImplTest {
     }
 
     @Test
-    void getMemberResults_UserNotFound() {
+    void getMemberResultsUserNotFound() {
         // Arrange
         when(userRepository.existsById(userId)).thenReturn(false);
 
@@ -120,7 +120,7 @@ class MemberResultsServiceImplTest {
     }
 
     @Test
-    void validateDateRange_StartDateAfterEndDate() {
+    void validateDateRangeStartDateAfterEndDate() {
         // Arrange
         LocalDateTime startDate = LocalDateTime.now().plusDays(1);
         LocalDateTime endDate = LocalDateTime.now();
@@ -134,7 +134,7 @@ class MemberResultsServiceImplTest {
     }
 
     @Test
-    void validateDateRange_NullDates() {
+    void validateDateRangeNullDates() {
         // Act & Assert
         assertDoesNotThrow(() ->
                 memberResultsService.validateDateRange(null, null)
@@ -142,7 +142,7 @@ class MemberResultsServiceImplTest {
     }
 
     @Test
-    void getMemberRankResults_UserExists() {
+    void getMemberRankResultsUserExists() {
         // Arrange
         when(userRepository.existsById(userId)).thenReturn(true);
 
@@ -165,7 +165,7 @@ class MemberResultsServiceImplTest {
     }
 
     @Test
-    void getMemberRankResults_UserNotFound() {
+    void getMemberRankResultsUserNotFound() {
         // Arrange
         when(userRepository.existsById(userId)).thenReturn(false);
 

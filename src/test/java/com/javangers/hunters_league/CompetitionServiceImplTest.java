@@ -47,7 +47,7 @@ class CompetitionServiceImplTest {
     }
 
     @Test
-    void createCompetition_ValidCompetition_Success() {
+    void createCompetitionValidCompetition_Success() {
         // Arrange
         when(competitionRepository.existsInWeek(any(), any())).thenReturn(false);
         when(competitionRepository.save(any(Competition.class))).thenReturn(validCompetition);
@@ -61,7 +61,7 @@ class CompetitionServiceImplTest {
     }
 
     @Test
-    void createCompetition_InvalidMinMaxParticipants_ThrowsException() {
+    void createCompetitionInvalidMinMaxParticipants_ThrowsException() {
         // Arrange
         validCompetition.setMinParticipants(60);
         validCompetition.setMaxParticipants(50);
@@ -72,7 +72,7 @@ class CompetitionServiceImplTest {
     }
 
     @Test
-    void createCompetition_InvalidCompetitionCode_ThrowsException() {
+    void createCompetitionInvalidCompetitionCode_ThrowsException() {
         // Arrange
         validCompetition.setCode("INVALID-CODE");
 
@@ -82,7 +82,7 @@ class CompetitionServiceImplTest {
     }
 
     @Test
-    void createCompetition_CompetitionAlreadyExistsInWeek_ThrowsException() {
+    void createCompetitionCompetitionAlreadyExistsInWeek_ThrowsException() {
         // Arrange
         when(competitionRepository.existsInWeek(any(), any())).thenReturn(true);
 
@@ -92,7 +92,7 @@ class CompetitionServiceImplTest {
     }
 
     @Test
-    void getCompetition_ExistingCompetition_ReturnsCompetition() {
+    void getCompetitionExistingCompetition_ReturnsCompetition() {
         // Arrange
         UUID competitionId = validCompetition.getId();
         when(competitionRepository.findById(competitionId))
@@ -107,7 +107,7 @@ class CompetitionServiceImplTest {
     }
 
     @Test
-    void getCompetition_NonExistingCompetition_ThrowsEntityNotFoundException() {
+    void getCompetitionNonExistingCompetition_ThrowsEntityNotFoundException() {
         // Arrange
         UUID randomId = UUID.randomUUID();
         when(competitionRepository.findById(randomId))
@@ -119,7 +119,7 @@ class CompetitionServiceImplTest {
     }
 
     @Test
-    void getCompetitionLeaderboard_ValidCompetition_ReturnsLeaderboard() {
+    void getCompetitionLeaderboardValidCompetition_ReturnsLeaderboard() {
         // Arrange
         UUID competitionId = validCompetition.getId();
 
@@ -152,7 +152,7 @@ class CompetitionServiceImplTest {
     }
 
     @Test
-    void getCompetitionLeaderboard_NoParticipants_ThrowsException() {
+    void getCompetitionLeaderboardNoParticipants_ThrowsException() {
         // Arrange
         UUID competitionId = validCompetition.getId();
         when(competitionRepository.findTop3ByCompetitionIdNative(competitionId))
