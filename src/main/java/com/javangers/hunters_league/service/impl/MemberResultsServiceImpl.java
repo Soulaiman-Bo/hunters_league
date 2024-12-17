@@ -55,7 +55,7 @@ public class MemberResultsServiceImpl implements MemberResultsService {
 
 
 
-    private void validateDateRange(LocalDateTime startDate, LocalDateTime endDate) {
+    public void validateDateRange(LocalDateTime startDate, LocalDateTime endDate) {
         if (startDate != null && endDate != null && startDate.isAfter(endDate)) {
             throw new BusinessValidationException("Start date must be before end date");
         }
