@@ -31,10 +31,11 @@
 		<org.mapstruct.version>1.5.5.Final</org.mapstruct.version>
 		<lombok-mapstruct-binding.version>0.2.0</lombok-mapstruct-binding.version>
 		<sonar.host.url>http://localhost:9000</sonar.host.url>
-		<sonar.projectKey>Hunters-League</sonar.projectKey>
-		<sonar.projectName>Hunters-League</sonar.projectName>
+		<sonar.projectKey>huntersLeague</sonar.projectKey>
+		<sonar.projectName>huntersLeague</sonar.projectName>
 		<sonar.projectVersion>0.0.1-SNAPSHOT</sonar.projectVersion>
-		<sonar.login>squ_0ecd8c165356edd4e37e94be37cc32c459c1ad23</sonar.login>
+		<sonar.login>sqp_65b7571f2d3bd83981004d9ee29ab39554fbb432</sonar.login>
+		<sonar.java.binaries>target/classes</sonar.java.binaries>
 	</properties>
 	<dependencies>
 
