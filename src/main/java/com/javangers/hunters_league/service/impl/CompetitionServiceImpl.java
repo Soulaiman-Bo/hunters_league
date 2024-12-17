@@ -97,4 +97,22 @@ public class CompetitionServiceImpl implements CompetitionService {
                 .collect(Collectors.toList());
     }
 
+    public List<LeaderboardPositionDTO> getCompesqsdqsdtitiondfgdfgLeaderboard(UUID competitionId) {
+        List<LeaderboardProjectionInterface> leaderboard = competitionRepository.findTop3ByCompetitionIdNative(competitionId);
+
+        if (leaderboard.isEmpty()) {
+            throw new BusinessValidationException("No particvbcipants found in this competition");
+        }
+        // hada wkan
+        // hada wkan 2
+        return leaderboard.stream()
+                .map(projection -> LeaderboardPositionDTO.builder()
+                        .userFullName(projection.getUsername())
+                        .score(projection.getScore())
+                        .rank(leaderboard.indexOf(projection) + 1)
+                        .competitionCode(projection.getCompetitionCode())
+                        .build())
+                .collect(Collectors.toList());
+    }
+
 }
