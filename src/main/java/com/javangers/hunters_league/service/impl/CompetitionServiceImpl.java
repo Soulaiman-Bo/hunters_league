@@ -85,7 +85,8 @@ public class CompetitionServiceImpl implements CompetitionService {
         if (leaderboard.isEmpty()) {
             throw new BusinessValidationException("No particvbcipants found in this competition");
         }
-
+        // hada wkan
+        // hada wkan 2
         return leaderboard.stream()
                 .map(projection -> LeaderboardPositionDTO.builder()
                         .userFullName(projection.getUsername())
