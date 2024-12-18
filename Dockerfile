@@ -7,7 +7,7 @@ WORKDIR /app
 
 # Copy the JAR file from the build output
 # Replace `samurai.jar` with the actual name of your JAR file
-ARG JAR_FILE=target/samurai.jar
+ARG JAR_FILE=target/hunters_league-0.0.1-SNAPSHOT.jar
 COPY ${JAR_FILE} app.jar
 
 # Copy the SSL keystore
