@@ -107,6 +107,10 @@ public class CompetitionServiceImpl implements CompetitionService {
         // hada wkan 2
         // hada wkan
         // hada wkan 2
+        // hada wkan
+        // hada wkan 2
+        // hada wkan
+        // hada wkan 2
         return leaderboard.stream()
                 .map(projection -> LeaderboardPositionDTO.builder()
                         .userFullName(projection.getUsername())
