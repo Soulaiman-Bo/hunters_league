@@ -1,7 +1,10 @@
 package com.javangers.hunters_league.web.vm;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.validation.constraints.*;
 import lombok.Data;
+import org.aspectj.bridge.IMessage;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDateTime;
 
@@ -40,5 +43,6 @@ public class RegisterRequestVM {
 
     @NotNull(message = "license Expiration Date is required")
     @Future(message = "license Expiration Date must be in the future")
+    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
     LocalDateTime licenseExpirationDate;
 }
