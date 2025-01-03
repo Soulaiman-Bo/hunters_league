@@ -1,27 +1,25 @@
 package com.javangers.hunters_league.web.rest;
 
 import com.javangers.hunters_league.domain.User;
+import com.javangers.hunters_league.security.CustomUserDetails;
 import com.javangers.hunters_league.security.CustomUserDetailsService;
 import com.javangers.hunters_league.security.JwtTokenUtil;
 import com.javangers.hunters_league.service.UserService;
-import com.javangers.hunters_league.web.vm.LoginRequestVM;
-import com.javangers.hunters_league.web.vm.LoginResponse;
-import com.javangers.hunters_league.web.vm.RegisterRequestVM;
-import com.javangers.hunters_league.web.vm.UserResponseVM;
+import com.javangers.hunters_league.web.vm.*;
 import com.javangers.hunters_league.web.vm.mapper.LoginMapper;
 import com.javangers.hunters_league.web.vm.mapper.RegisterMapper;
 import jakarta.validation.Valid;
-import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.NotBlank;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.stream.Collectors;
 
 @RestController
 @RequiredArgsConstructor
@@ -46,7 +44,20 @@ public class AuthController {
         SecurityContextHolder.getContext().setAuthentication(authentication);
         String jwt = jwtTokenUtil.generateToken(authentication);
 
-        return ResponseEntity.ok(new LoginResponse(jwt));
+        CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
+        UserResponse userResponse = new UserResponse(
+            userDetails.getUserId(),
+            userDetails.getEmail(),
+            userDetails.getAuthorities().stream()
+                .map(GrantedAuthority::getAuthority)
+                .collect(Collectors.toList()),
+            userDetails.getFirstName(),
+            userDetails.getLastName()
+        );
+
+
+
+        return ResponseEntity.ok(new LoginResponse(jwt, userResponse));
 
     }
 
