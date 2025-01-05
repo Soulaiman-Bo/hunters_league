@@ -44,4 +44,13 @@ public interface CompetitionRepository extends JpaRepository<Competition, UUID> 
             WHERE p.user.id = :memberId
         """)
     Page<Competition> findCompetitionsByMember(@Param("memberId") UUID memberId, Pageable pageable);
+
+    @Query("""
+            SELECT c
+            FROM Competition c
+            WHERE c.date > :currentDate
+            ORDER BY c.date ASC
+        """)
+    Page<Competition> findUpcomingCompetitions(@Param("currentDate") LocalDateTime currentDate, Pageable pageable);
+
 }

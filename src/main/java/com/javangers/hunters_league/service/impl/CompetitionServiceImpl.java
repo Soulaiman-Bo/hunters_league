@@ -3,8 +3,10 @@ package com.javangers.hunters_league.service.impl;
 import com.javangers.hunters_league.domain.Competition;
 import com.javangers.hunters_league.repository.CompetitionRepository;
 import com.javangers.hunters_league.service.CompetitionService;
+import com.javangers.hunters_league.service.dto.CompetitionDTO;
 import com.javangers.hunters_league.service.dto.LeaderboardPositionDTO;
 import com.javangers.hunters_league.service.dto.LeaderboardProjectionInterface;
+import com.javangers.hunters_league.service.dto.mapper.CompetitionMapper;
 import com.javangers.hunters_league.web.errors.BusinessValidationException;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
@@ -26,6 +28,7 @@ import java.util.stream.Collectors;
 public class CompetitionServiceImpl implements CompetitionService {
 
     private final CompetitionRepository competitionRepository;
+    private final CompetitionMapper competitionMapper;
 
 
     @Override
@@ -35,8 +38,16 @@ public class CompetitionServiceImpl implements CompetitionService {
     }
 
     @Override
-    public Page<Competition> getCompetitionsByMember(UUID memberId, Pageable pageable) {
-        return competitionRepository.findCompetitionsByMember(memberId, pageable);
+    public Page<CompetitionDTO> getCompetitionsByMember(UUID memberId, Pageable pageable) {
+        Page<Competition> competitions = competitionRepository.findCompetitionsByMember(memberId, pageable);
+        return competitions.map(competitionMapper::toDTO);
+    }
+
+    @Override
+    public Page<CompetitionDTO> getUpcomingCompetitions(Pageable pageable) {
+        LocalDateTime now = LocalDateTime.now();
+        Page<Competition> competitions = competitionRepository.findUpcomingCompetitions(now, pageable);
+        return competitions.map(competitionMapper::toDTO);
     }
 
 
@@ -47,8 +58,9 @@ public class CompetitionServiceImpl implements CompetitionService {
     }
 
     @Override
-    public Page<Competition> getAllCompetitions(Pageable pageable) {
-        return competitionRepository.findAll(pageable);
+    public Page<CompetitionDTO> getAllCompetitions(Pageable pageable) {
+        Page<Competition> competitions = competitionRepository.findAll(pageable);
+        return competitions.map(competitionMapper::toDTO);
     }
 
     private void validateCompetition(Competition competition) {

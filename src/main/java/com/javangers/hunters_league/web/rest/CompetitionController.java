@@ -4,6 +4,7 @@ import com.javangers.hunters_league.domain.Competition;
 import com.javangers.hunters_league.domain.Participation;
 import com.javangers.hunters_league.service.CompetitionService;
 import com.javangers.hunters_league.service.ParticipationService;
+import com.javangers.hunters_league.service.dto.CompetitionDTO;
 import com.javangers.hunters_league.service.dto.LeaderboardPositionDTO;
 import com.javangers.hunters_league.service.dto.ParticipationDTO;
 import com.javangers.hunters_league.web.vm.CompetitionRequestVM;
@@ -42,10 +43,12 @@ public class CompetitionController {
     }
 
     @GetMapping
-    public ResponseEntity<Page<Competition>> getAllCompetition(@RequestParam(defaultValue = "0") int page,
-                                                               @RequestParam(defaultValue = "10") int size) {
+    public ResponseEntity<Page<CompetitionDTO>> getAllCompetitions(
+        @RequestParam(defaultValue = "0") int page,
+        @RequestParam(defaultValue = "10") int size
+    ) {
         Pageable pageable = PageRequest.of(page, size);
-        Page<Competition> competitions = competitionService.getAllCompetitions(pageable);
+        Page<CompetitionDTO> competitions = competitionService.getAllCompetitions(pageable);
         return ResponseEntity.ok(competitions);
     }
 
@@ -58,16 +61,25 @@ public class CompetitionController {
     }
 
     @GetMapping("/member/{memberId}")
-    public ResponseEntity<Page<Competition>> getCompetitionsByMember(
+    public ResponseEntity<Page<CompetitionDTO>> getCompetitionsByMember(
         @PathVariable UUID memberId,
         @RequestParam(defaultValue = "0") int page,
         @RequestParam(defaultValue = "10") int size
     ) {
         Pageable pageable = PageRequest.of(page, size);
-        Page<Competition> competitions = competitionService.getCompetitionsByMember(memberId, pageable);
+        Page<CompetitionDTO> competitions = competitionService.getCompetitionsByMember(memberId, pageable);
         return ResponseEntity.ok(competitions);
     }
 
+    @GetMapping("/upcoming")
+    public ResponseEntity<Page<CompetitionDTO>> getUpcomingCompetitions(
+        @RequestParam(defaultValue = "0") int page,
+        @RequestParam(defaultValue = "10") int size
+    ) {
+        Pageable pageable = PageRequest.of(page, size);
+        Page<CompetitionDTO> competitions = competitionService.getUpcomingCompetitions(pageable);
+        return ResponseEntity.ok(competitions);
+    }
 
     @PostMapping("/{competitionId}/register")
     @PreAuthorize("hasRole('MEMBER')")
