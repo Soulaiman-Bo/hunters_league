@@ -9,6 +9,8 @@ import com.javangers.hunters_league.web.errors.BusinessValidationException;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.time.DayOfWeek;
@@ -32,11 +34,21 @@ public class CompetitionServiceImpl implements CompetitionService {
         return competitionRepository.save(competition);
     }
 
+    @Override
+    public Page<Competition> getCompetitionsByMember(UUID memberId, Pageable pageable) {
+        return competitionRepository.findCompetitionsByMember(memberId, pageable);
+    }
+
 
     @Override
     public Competition getCompetition(UUID id) {
         return competitionRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Competition not found with id: " + id));
+    }
+
+    @Override
+    public Page<Competition> getAllCompetitions(Pageable pageable) {
+        return competitionRepository.findAll(pageable);
     }
 
     private void validateCompetition(Competition competition) {
@@ -78,76 +90,4 @@ public class CompetitionServiceImpl implements CompetitionService {
                         .build())
                 .collect(Collectors.toList());
     }
-
-    public List<LeaderboardPositionDTO> getCompetitiondfgdfgLeaderboard(UUID competitionId) {
-        List<LeaderboardProjectionInterface> leaderboard = competitionRepository.findTop3ByCompetitionIdNative(competitionId);
-
-        if (leaderboard.isEmpty()) {
-            throw new BusinessValidationException("No particvbcipants found in this competition");
-        }
-        // hada wkan
-        // hada wkan 2
-        return leaderboard.stream()
-                .map(projection -> LeaderboardPositionDTO.builder()
-                        .userFullName(projection.getUsername())
-                        .score(projection.getScore())
-                        .rank(leaderboard.indexOf(projection) + 1)
-                        .competitionCode(projection.getCompetitionCode())
-                        .build())
-                .collect(Collectors.toList());
-    }
-
-    public List<LeaderboardPositionDTO> getCompesqsdqsdtitiondfgdfgLeaderboard(UUID competitionId) {
-        List<LeaderboardProjectionInterface> leaderboard = competitionRepository.findTop3ByCompetitionIdNative(competitionId);
-
-        if (leaderboard.isEmpty()) {
-            throw new BusinessValidationException("No particvbcipants found in this competition");
-        }
-        // hada wkan
-        // hada wkan 2
-        // hada wkan
-        // hada wkan 2
-        // hada wkan
-        // hada wkan 2
-        // hada wkan
-        // hada wkan 2
-        // hada wkan
-        // hada wkan 2
-        // hada wkan
-        // hada wkan 2
-        // hada wkan
-        // hada wkan 2
-        // hada wkan
-        // hada wkan
-        // hada wkan 2
-        // hada wkan
-        // hada wkan 2
-        // hada wkan
-        // hada wkan 2
-        // hada wkan
-        // hada wkan 2
-        // hada wkan
-        // hada wkan 2
-        // hada wkan
-        // hada wkan 2
-        // hada wkan
-        // hada wkan 2
-        // hada wkan
-        // hada wkan 2
-        // hada wkan
-        // hada wkan 2
-        // hada wkan
-        // hada wkan 2
-        // hada wkan
-        // hada wkan 2
-        return leaderboard.stream()
-                .map(projection -> LeaderboardPositionDTO.builder()
-                        .userFullName(projection.getUsername())
-                        .score(projection.getScore())
-                        .rank(leaderboard.indexOf(projection) + 1)
-                        .competitionCode(projection.getCompetitionCode())
-                        .build())
-                .collect(Collectors.toList());
-    }
-
 }
