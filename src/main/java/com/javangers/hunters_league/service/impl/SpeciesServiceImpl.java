@@ -2,11 +2,14 @@ package com.javangers.hunters_league.service.impl;
 
 
 import com.javangers.hunters_league.domain.Species;
+import com.javangers.hunters_league.domain.enumeration.SpeciesType;
 import com.javangers.hunters_league.repository.SpeciesRepository;
 import com.javangers.hunters_league.service.SpeciesService;
 import com.javangers.hunters_league.web.errors.SpeciesAlreadyExistsException;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -30,6 +33,11 @@ public class SpeciesServiceImpl implements SpeciesService {
         }
 
         return speciesRepository.save(species);
+    }
+
+    @Override
+    public Page<Species> findByCategory(SpeciesType category, Pageable pageable) {
+        return speciesRepository.findByCategory(category, pageable);
     }
 
     public Species updateSpecies(Species species) {
