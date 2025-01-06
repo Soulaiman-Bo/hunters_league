@@ -11,8 +11,7 @@ import java.util.Optional;
 import java.util.UUID;
 
 public interface SpeciesRepository extends JpaRepository<Species, UUID> {
-    List<Species> findAll();
-    Optional<Species> findByName(String name);
+    Page<Species> findAll(Pageable pageable);
     boolean existsByNameIgnoreCase(String name);
     Page<Species> findByCategory(SpeciesType category, Pageable pageable);
 }

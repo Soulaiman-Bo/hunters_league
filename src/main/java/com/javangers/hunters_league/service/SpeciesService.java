@@ -8,7 +8,7 @@ import org.springframework.data.domain.Pageable;
 import java.util.List;
 
 public interface SpeciesService {
-    List<Species> findAll();
+    Page<Species> findAll(Pageable pageable);
     Species createSpecies(Species species);
 
     Page<Species> findByCategory(SpeciesType category, Pageable pageable);
