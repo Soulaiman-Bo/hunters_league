@@ -10,9 +10,14 @@ import jakarta.validation.Valid;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequiredArgsConstructor
@@ -49,6 +54,21 @@ public class UserController {
     ) {
         User returnedUser = loginService.findUserByEmail(email);
         UserResponseVM response = loginMapper.toResponseVM(returnedUser);
+        return ResponseEntity.ok(response);
+    }
+
+    @GetMapping("/all")
+    public ResponseEntity<Page<UserResponseVM>> getAllUsers(
+        @RequestParam(defaultValue = "0") int page,
+        @RequestParam(defaultValue = "10") int size,
+        @RequestParam(defaultValue = "id,asc") String sort // Format: "field,direction" (e.g., "email,desc")
+    ) {
+        String[] sortParams = sort.split(",");
+        String sortField = sortParams[0];
+        Sort.Direction sortDirection = Sort.Direction.fromString(sortParams[1]);
+
+        Page<User> users = loginService.getAllUsers(page, size, sortField, sortDirection);
+        Page<UserResponseVM> response = users.map(loginMapper::toResponseVM);
         return ResponseEntity.ok(response);
     }
 

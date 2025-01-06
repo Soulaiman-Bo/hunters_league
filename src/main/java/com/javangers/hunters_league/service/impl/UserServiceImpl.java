@@ -9,6 +9,10 @@ import com.javangers.hunters_league.web.errors.InvalidLicenseException;
 import com.javangers.hunters_league.web.errors.UserAlreadyExistsException;
 import com.javangers.hunters_league.web.errors.UserNotFoundException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -78,4 +82,10 @@ public class UserServiceImpl implements UserService {
         return userRepository.save(user);
     }
 
+    @Override
+    public Page<User> getAllUsers(int page, int size, String sortField, Sort.Direction sortDirection) {
+        Sort sort = Sort.by(sortDirection, sortField); // Create a Sort object
+        Pageable pageable = PageRequest.of(page, size, sort); // Add sorting to the Pageable
+        return userRepository.findAll(pageable);
+    }
 }
